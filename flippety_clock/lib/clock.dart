@@ -76,19 +76,27 @@ class _ClockState extends State<Clock> {
         DateFormat(widget.model.is24HourFormat ? 'HH' : 'hh').format(_dateTime);
     final minute = DateFormat('mm').format(_dateTime);
 
-    final double scrWidth = MediaQuery.of(context).size.width;
-    final double clockVerticalPadding = scrWidth * 0.045;
-    final double eachCubePadding = scrWidth * 0.005;
-    final double cubeSize = (scrWidth - 20 * eachCubePadding) / 19;
-    final double fontSize = scrWidth * 0.05;
-
     final colors = Theme.of(context).brightness == Brightness.light
         ? lightTheme
         : darkTheme;
 
-    return AspectRatio(
-      aspectRatio: 5 / 3,
-      child: Container(
+    //To get the max width allowed by the parent widget i.e AspectRatio
+    //This is used to consider for the SafeArea like notches or status
+    //bar when being test on the mobile. Otherwise MediaQuery could be used
+    //to get the screen width.
+    return LayoutBuilder(
+        builder: (BuildContext context, BoxConstraints constraints) {
+      //The width of the clockface.
+      final double clockWidth = constraints.maxWidth;
+      //vertical margin in the clockface.
+      final double clockVerticalPadding = clockWidth * 0.045;
+      //Margin for each cube in the digit matrix.
+      final double eachCubeMargin = clockWidth * 0.005;
+      //Size for each cube in the digit matrix.
+      final double cubeSize = (clockWidth - 20 * eachCubeMargin) / 19;
+      final double fontSize = clockWidth * 0.05;
+
+      return Container(
         padding: EdgeInsets.symmetric(vertical: clockVerticalPadding),
         color: colors[ThemeElement.notFlipped],
         child: DefaultTextStyle(
@@ -109,7 +117,7 @@ class _ClockState extends State<Clock> {
                     DigitMatrixWidget(
                       digit: int.parse(hour.split('')[0]),
                       cubeSize: cubeSize,
-                      padding: eachCubePadding,
+                      margin: eachCubeMargin,
                       flippedColor: colors[ThemeElement.flipped],
                       unFlippedColor: colors[ThemeElement.notFlipped],
                       shadowColor: colors[ThemeElement.shadow],
@@ -119,7 +127,7 @@ class _ClockState extends State<Clock> {
                     DigitMatrixWidget(
                       digit: int.parse(hour.split('')[1]),
                       cubeSize: cubeSize,
-                      padding: eachCubePadding,
+                      margin: eachCubeMargin,
                       flippedColor: colors[ThemeElement.flipped],
                       unFlippedColor: colors[ThemeElement.notFlipped],
                       shadowColor: colors[ThemeElement.shadow],
@@ -128,7 +136,7 @@ class _ClockState extends State<Clock> {
                     DigitMatrixWidget(
                       digit: 10,
                       cubeSize: cubeSize,
-                      padding: eachCubePadding,
+                      margin: eachCubeMargin,
                       flippedColor: colors[ThemeElement.flipped],
                       unFlippedColor: colors[ThemeElement.notFlipped],
                       shadowColor: colors[ThemeElement.shadow],
@@ -137,7 +145,7 @@ class _ClockState extends State<Clock> {
                     DigitMatrixWidget(
                       digit: int.parse(minute.split('')[0]),
                       cubeSize: cubeSize,
-                      padding: eachCubePadding,
+                      margin: eachCubeMargin,
                       flippedColor: colors[ThemeElement.flipped],
                       unFlippedColor: colors[ThemeElement.notFlipped],
                       shadowColor: colors[ThemeElement.shadow],
@@ -147,7 +155,7 @@ class _ClockState extends State<Clock> {
                     DigitMatrixWidget(
                       digit: int.parse(minute.split('')[1]),
                       cubeSize: cubeSize,
-                      padding: eachCubePadding,
+                      margin: eachCubeMargin,
                       flippedColor: colors[ThemeElement.flipped],
                       unFlippedColor: colors[ThemeElement.notFlipped],
                       shadowColor: colors[ThemeElement.shadow],
@@ -170,7 +178,7 @@ class _ClockState extends State<Clock> {
             ],
           ),
         ),
-      ),
-    );
+      );
+    });
   }
 }

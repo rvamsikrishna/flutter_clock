@@ -6,7 +6,7 @@ class DigitMatrixWidget extends StatelessWidget {
     Key key,
     @required this.digit,
     this.cubeSize,
-    this.padding = 0.0,
+    this.margin = 0.0,
     this.flippedColor,
     this.unFlippedColor,
     this.shadowColor,
@@ -14,7 +14,7 @@ class DigitMatrixWidget extends StatelessWidget {
 
   final int digit;
   final double cubeSize;
-  final double padding;
+  final double margin;
   final Color flippedColor;
   final Color unFlippedColor;
   final Color shadowColor;
@@ -32,7 +32,7 @@ class DigitMatrixWidget extends StatelessWidget {
                 ...row.map(
                   (c) {
                     return Container(
-                      margin: EdgeInsets.all(padding),
+                      margin: EdgeInsets.all(margin),
                       child: Cube(
                         size: cubeSize,
                         flipped: c == 1,
